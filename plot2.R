@@ -24,8 +24,12 @@ data <- na.omit(fread(targetFile, stringsAsFactors=TRUE, header=TRUE, sep=";", c
 dataSubset <- data[as.Date(as.character(data$Date), format="%d/%m/%Y") %in% as.Date(c('01/02/2007', '02/02/2007'), format="%d/%m/%Y"),]
 
 ##Create Histogram
-hist(as.numeric(dataSubset$Global_active_power), right=FALSE, main="Global Active Power", xlab="Global Active Power (kilowatts)", col="red")
+##hist(as.numeric(dataSubset$Global_active_power), right=FALSE, main="Global Active Power", xlab="Global Active Power (kilowatts)", col="red")
 
-##Output Histogram to PNG "plot1.png"
-dev.copy(png, filename=file.path("plot1.png"), width=480, height=480)
+##Create a Line Plot of Global Active Power by Date&Time 
+dateTime <- strptime(paste(dataSubset$Date, dataSubset$Time), format="%d/%m/%Y %H:%M:%S")
+plot(dateTime, as.numeric(dataSubset$Global_active_power), type="l", ylab="Global Active Power (kilowatts)", xlab="")
+
+##Output Line Plot to PNG "plot2.png"
+dev.copy(png, filename=file.path("./plot2.png"), width=480, height=480)
 dev.off()
