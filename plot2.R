@@ -23,9 +23,6 @@ columnClasses <- sapply(dataSample, class)
 data <- na.omit(fread(targetFile, stringsAsFactors=TRUE, header=TRUE, sep=";", colClasses=columnClasses, data.table=FALSE, na.strings=c("?")))
 dataSubset <- data[as.Date(as.character(data$Date), format="%d/%m/%Y") %in% as.Date(c('01/02/2007', '02/02/2007'), format="%d/%m/%Y"),]
 
-##Create Histogram
-##hist(as.numeric(dataSubset$Global_active_power), right=FALSE, main="Global Active Power", xlab="Global Active Power (kilowatts)", col="red")
-
 ##Create a Line Plot of Global Active Power by Date&Time 
 dateTime <- strptime(paste(dataSubset$Date, dataSubset$Time), format="%d/%m/%Y %H:%M:%S")
 plot(dateTime, as.numeric(dataSubset$Global_active_power), type="l", ylab="Global Active Power (kilowatts)", xlab="")

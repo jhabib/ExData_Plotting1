@@ -20,21 +20,32 @@ dataSample <- fread(targetFile, nrows=100, stringsAsFactors=FALSE, header=TRUE, 
 colNames <- dataSample[0,]
 columnClasses <- sapply(dataSample, class)
 
+##Subset the data to include observations from 01/02/2007 and 02/02/2007, and omit na values
 data <- na.omit(fread(targetFile, stringsAsFactors=TRUE, header=TRUE, sep=";", colClasses=columnClasses, data.table=FALSE, na.strings=c("?")))
 dataSubset <- data[as.Date(as.character(data$Date), format="%d/%m/%Y") %in% as.Date(c('01/02/2007', '02/02/2007'), format="%d/%m/%Y"),]
 
 ##Create a vector of Date&Time for plotting other variables
 dateTime <- strptime(paste(dataSubset$Date, dataSubset$Time), format="%d/%m/%Y %H:%M:%S")
 
-##Create a Line Plots of Sub metering values _1, _2, and _3 by Date&Time 
+##Use the par() function to divide window into 2 columns and 2 rows
+par(mfrow=c(2,2))
+
+##Create a Line Plot of Global Active Power vs. Date&Time 
+with(dataSubset, plot(dateTime, as.numeric(Global_active_power), type="l", ylab="Global Active Power (kilowatts)", xlab=""))
+
+##Create a Line Plot of Voltage vs. Date&Time
+with(dataSubset, plot(dateTime, Voltage), type="l", ylab="Voltage", xlab="datetime")
+
+##Create Line Plots of Sub metering values _1, _2, and _3 vs. Date&Time 
 with(dataSubset, plot(dateTime, Sub_metering_1, type="l", ylab="Energy sub metering", xlab=""))
 with(dataSubset, lines(dateTime, Sub_metering_2, col="red"))
 with(dataSubset, lines(dateTime, Sub_metering_3, col="blue"))
-
 ##Add legend to plot
 legend("topright", c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), lty=c(1, 1, 1), lwd=c(1, 1, 1), col=c("black", "red", "blue"), cex=0.75)
 
+##Create a Line Plot of Global_reactive_power vs. Date&Time
+with(dataSubset, plot(dateTime, as.numeric(Global_reactive_power), type="l", ylab="Global_reactive_power", xlab="datetime"))
 
-##Output Line Plot to PNG "plot3.png"
-dev.copy(png, filename=file.path("./plot3.png"), width=480, height=480)
+##Output Line Plot to PNG "plot3.png" and clear the plot window
+dev.copy(png, filename=file.path("./plot4.png"), width=480, height=480)
 dev.off()
