@@ -34,7 +34,7 @@ par(mfrow=c(2,2))
 with(dataSubset, plot(dateTime, as.numeric(Global_active_power), type="l", ylab="Global Active Power (kilowatts)", xlab=""))
 
 ##Create a Line Plot of Voltage vs. Date&Time
-with(dataSubset, plot(dateTime, Voltage), type="l", ylab="Voltage", xlab="datetime")
+with(dataSubset, plot(dateTime, as.numeric(Voltage), type="l", ylab="Voltage", xlab="datetime"))
 
 ##Create Line Plots of Sub metering values _1, _2, and _3 vs. Date&Time 
 with(dataSubset, plot(dateTime, Sub_metering_1, type="l", ylab="Energy sub metering", xlab=""))
